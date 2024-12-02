@@ -7,8 +7,6 @@ import {
   TUserName,
 } from './student.interface'
 import validator from 'validator'
-import bcrypt from 'bcrypt'
-import config from '../../config'
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -80,10 +78,11 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
     id: { type: String, required: true, unique: true },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      maxLength: [20, 'Password cannot be more than 20 characters'],
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User ID is required'],
+      unique: true,
+      ref: 'User',
     },
     name: {
       type: userNameSchema,
@@ -136,11 +135,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Local Guardian Schema is required'],
     },
     profileImg: { type: String },
-    isActive: {
-      type: String,
-      enum: ['active', 'blocked'],
-      default: 'active',
-    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -155,27 +149,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 
 studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
-})
-
-// Document Middleware
-// pre save middleware/ hook : will work on create(), save()
-studentSchema.pre('save', async function (next) {
-  // console.log(this, 'pre hook: we will save the data')
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this
-
-  // hashing password and saving into DB
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  )
-  next()
-})
-
-// post save middleware/ hook : will work on create(), save()
-studentSchema.post('save', function (doc, next) {
-  doc.password = ''
-  next()
 })
 
 // Query Middleware
@@ -193,6 +166,11 @@ studentSchema.pre('findOne', function (next) {
     isDeleted: { $ne: true },
   })
   next()
+})
+
+// virtual
+studentSchema.virtual('fullName').get(function () {
+  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
 })
 
 // Aggregate Middleware
