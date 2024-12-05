@@ -75,7 +75,7 @@ const studentValidationSchema = Joi.object({
     'any.only': '{#label} must be one of [male, female, other]',
     'any.required': 'Gender is required',
   }),
-  dateOfBirth: Joi.string().isoDate().optional().messages({
+  dateOfBirth: Joi.date().optional().messages({
     'string.isoDate': 'Date of Birth must be a valid ISO date string',
   }),
   email: Joi.string().email().required().messages({
