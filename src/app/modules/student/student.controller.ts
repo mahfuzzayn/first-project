@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StudentServices } from './student.service'
 import sendResponse from '../../utils/sendResponse'
 import httpStatus from 'http-status'
