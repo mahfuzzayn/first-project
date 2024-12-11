@@ -139,8 +139,12 @@ const studentSchema = new Schema<TStudent, StudentModel>(
         },
         profileImg: { type: String },
         admissionSemester: {
-            type: Schema.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'AcademicSemester',
+        },
+        academicDepartment: {
+            type: Schema.Types.ObjectId,
+            ref: 'AcademicDepartment',
         },
         isDeleted: {
             type: Boolean,
@@ -199,9 +203,9 @@ studentSchema.statics.isUserExists = async function (id: string) {
 }
 
 // Creating a custom instance method
-// studentSchema.methods.isUserExists = async function (id: string) {
-//   const existingUser = await Student.findOne({ id })
-//   return existingUser
-// }
+studentSchema.methods.isUserExists = async function (id: string) {
+  const existingUser = await Student.findOne({ id })
+  return existingUser
+}
 
 export const Student = model<TStudent, StudentModel>('Student', studentSchema)

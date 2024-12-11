@@ -8,6 +8,6 @@ const userValidationSchema = z.object({
     .max(20, { message: 'Password cannot be more than 20 characters' }),
 })
 
-export const UserValidation = {
+export const UserValidations = {
   userValidationSchema,
 }

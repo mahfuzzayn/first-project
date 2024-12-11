@@ -1,10 +1,11 @@
 import { TAcademicSemester } from './academicSemester.interface'
 import { AcademicSemester } from './academicSemester.model'
 import { academicSemesterNameCodeMapper } from './academicSemester.constant'
+import AppError from '../../errors/AppError'
 
 const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
     if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
-        throw new Error('Invalid Semester Code')
+        throw new AppError(httpStatus.NOT_FOUND, 'Invalid Semester Code')
     }
 
     const result = await AcademicSemester.create(payload)
@@ -22,14 +23,17 @@ const getSingleAcademicSemesterFromDB = async (semesterId: string) => {
     return result
 }
 
-const updateAcademicSemesterFromDB = async (
+const updateAcademicSemesterIntoDB = async (
     semesterId: string,
     payload: Partial<TAcademicSemester>,
 ) => {
     if (
         academicSemesterNameCodeMapper[payload.name as string] !== payload.code
     ) {
-        throw new Error('Invalid semester code. Failed to update the semester')
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            'Invalid semester code. Failed to update the semester',
+        )
     }
 
     const result = await AcademicSemester.findByIdAndUpdate(semesterId, payload)
@@ -41,5 +45,5 @@ export const AcademicSemesterServices = {
     createAcademicSemesterIntoDB,
     getAllAcademicSemesterFromDB,
     getSingleAcademicSemesterFromDB,
-    updateAcademicSemesterFromDB,
+    updateAcademicSemesterFromDB: updateAcademicSemesterIntoDB,
 }
