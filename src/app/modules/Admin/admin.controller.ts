@@ -4,9 +4,9 @@ import { AdminServices } from './admin.service'
 import httpStatus from 'http-status'
 
 const getSingleAdmin = catchAsync(async (req, res) => {
-    const { adminId } = req.params
+    const { id } = req.params
 
-    const result = await AdminServices.getSingleAdminFromDB(adminId)
+    const result = await AdminServices.getSingleAdminFromDB(id)
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -28,9 +28,9 @@ const getAllAdmins = catchAsync(async (req, res) => {
 })
 
 const deleteAdmin = catchAsync(async (req, res) => {
-    const { adminId } = req.params
+    const { id } = req.params
 
-    const result = await AdminServices.deleteAdminFromDB(adminId)
+    const result = await AdminServices.deleteAdminFromDB(id)
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -41,10 +41,10 @@ const deleteAdmin = catchAsync(async (req, res) => {
 })
 
 const updateAdmin = catchAsync(async (req, res) => {
-    const { adminId } = req.params
+    const { id } = req.params
     const { admin: updatedData } = req.body
 
-    const result = await AdminServices.updateAdminIntoDB(adminId, updatedData)
+    const result = await AdminServices.updateAdminIntoDB(id, updatedData)
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

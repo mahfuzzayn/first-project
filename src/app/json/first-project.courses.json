@@ -1,0 +1,283 @@
+[{
+  "_id": {
+    "$oid": "6761c60a61c5cad95113b753"
+  },
+  "title": "Basic Computer Skill",
+  "prefix": "BASIC",
+  "code": 100,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c62861c5cad95113b755"
+  },
+  "title": "Hyper Text Markup Langugae",
+  "prefix": "HTML",
+  "code": 101,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c60a61c5cad95113b753"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c62861c5cad95113b756"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c66961c5cad95113b75c"
+  },
+  "title": "Cascading Style Sheet",
+  "prefix": "CSS",
+  "code": 102,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c62861c5cad95113b755"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c66961c5cad95113b75d"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c83061c5cad95113b770"
+  },
+  "title": "Problem Solving with JS",
+  "prefix": "JS",
+  "code": 107,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c7ff61c5cad95113b76e"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c83061c5cad95113b771"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c79361c5cad95113b764"
+  },
+  "title": "Bootstrap",
+  "prefix": "CSS",
+  "code": 103,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c66961c5cad95113b75c"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c79361c5cad95113b765"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c7d961c5cad95113b76a"
+  },
+  "title": "Daisy UI",
+  "prefix": "CSS",
+  "code": 105,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c66961c5cad95113b75c"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c7d961c5cad95113b76b"
+      }
+    },
+    {
+      "course": {
+        "$oid": "6761c7af61c5cad95113b767"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c7d961c5cad95113b76c"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c7af61c5cad95113b767"
+  },
+  "title": "Tailwind CSS",
+  "prefix": "CSS",
+  "code": 104,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c66961c5cad95113b75c"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c7af61c5cad95113b768"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c7ff61c5cad95113b76e"
+  },
+  "title": "Basic Javascript",
+  "prefix": "JS",
+  "code": 106,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c86961c5cad95113b773"
+  },
+  "title": "Dom Manipulation",
+  "prefix": "JS",
+  "code": 108,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c83061c5cad95113b770"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c86961c5cad95113b774"
+      }
+    },
+    {
+      "course": {
+        "$oid": "6761c66961c5cad95113b75c"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c86961c5cad95113b775"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c88761c5cad95113b777"
+  },
+  "title": "Basic React",
+  "prefix": "REACT",
+  "code": 109,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c86961c5cad95113b773"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c88761c5cad95113b778"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c8a861c5cad95113b77a"
+  },
+  "title": "React Router Dom",
+  "prefix": "REACT",
+  "code": 110,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c88761c5cad95113b777"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c8a861c5cad95113b77b"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c8c761c5cad95113b77d"
+  },
+  "title": "Firebase Authentication",
+  "prefix": "FIREBASE",
+  "code": 111,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6761c95061c5cad95113b77f"
+  },
+  "title": "Basic Express",
+  "prefix": "EXPRESS",
+  "code": 112,
+  "credits": 3,
+  "isDeleted": false,
+  "preRequisiteCourses": [
+    {
+      "course": {
+        "$oid": "6761c7ff61c5cad95113b76e"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c95061c5cad95113b780"
+      }
+    },
+    {
+      "course": {
+        "$oid": "6761c83061c5cad95113b770"
+      },
+      "isDeleted": false,
+      "_id": {
+        "$oid": "6761c95061c5cad95113b781"
+      }
+    }
+  ],
+  "__v": 0
+}]

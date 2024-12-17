@@ -30,7 +30,7 @@ const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
 }
 
 const getSingleAdminFromDB = async (id: string) => {
-    const result = await Admin.findOne({ id }).populate({
+    const result = await Admin.findById(id).populate({
         path: 'managementDepartment',
         populate: {
             path: 'academicFaculty',
@@ -53,7 +53,7 @@ const updateAdminIntoDB = async (id: string, payload: Partial<TAdmin>) => {
         }
     }
 
-    const result = await Admin.findOneAndUpdate({ id }, modifiedUpdatedData)
+    const result = await Admin.findByIdAndUpdate(id, modifiedUpdatedData)
 
     return result
 }
@@ -68,10 +68,8 @@ const deleteAdminFromDB = async (id: string) => {
     try {
         session.startTransaction()
 
-        const deletedAdmin = await Admin.findOneAndUpdate(
-            {
-                id,
-            },
+        const deletedAdmin = await Admin.findByIdAndUpdate(
+            id,
             {
                 isDeleted: true,
             },
@@ -85,8 +83,10 @@ const deleteAdminFromDB = async (id: string) => {
             throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete admin')
         }
 
-        const deletedUser = await User.findOneAndUpdate(
-            { id },
+        const userId = deletedAdmin.user
+
+        const deletedUser = await User.findByIdAndUpdate(
+            userId,
             {
                 isDeleted: true,
             },

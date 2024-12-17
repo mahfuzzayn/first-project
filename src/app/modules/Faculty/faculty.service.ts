@@ -30,7 +30,7 @@ const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
 }
 
 const getSingleFacultyFromDB = async (id: string) => {
-    const result = await Faculty.findOne({ id }).populate({
+    const result = await Faculty.findById(id).populate({
         path: 'academicDepartment',
         populate: {
             path: 'academicFaculty',
@@ -53,7 +53,10 @@ const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
         }
     }
 
-    const result = await Faculty.findOneAndUpdate({ id }, modifiedUpdatedData)
+    const result = await Faculty.findByIdAndUpdate(id, modifiedUpdatedData, {
+        new: true,
+        runValidators: true,
+    })
 
     return result
 }
@@ -68,10 +71,8 @@ const deleteFacultyFromDB = async (id: string) => {
     try {
         session.startTransaction()
 
-        const deletedFaculty = await Faculty.findOneAndUpdate(
-            {
-                id,
-            },
+        const deletedFaculty = await Faculty.findByIdAndUpdate(
+            id,
             {
                 isDeleted: true,
             },
@@ -88,8 +89,10 @@ const deleteFacultyFromDB = async (id: string) => {
             )
         }
 
-        const deletedUser = await User.findOneAndUpdate(
-            { id },
+        const userId = deletedFaculty.user
+
+        const deletedUser = await User.findByIdAndUpdate(
+            userId,
             {
                 isDeleted: true,
             },
