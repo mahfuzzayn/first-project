@@ -5,7 +5,7 @@ import { ZodError } from 'zod'
 import { TErrorResources } from '../interface/error'
 import config from '../config'
 import handleZodError from '../errors/handleZodError'
-import mongoose, { MongooseError } from 'mongoose'
+import mongoose from 'mongoose'
 import handleValidationError from '../errors/handleValidationError'
 import handleCastError from '../errors/handleCastError'
 import handleDuplicateError from '../errors/handleDuplicateError'
@@ -60,7 +60,7 @@ const globalErrorHandler: ErrorRequestHandler = (
         message = error?.message
         errorSources = [{ path: '', message: error?.message }]
     }
-    
+
     return res.status(statusCode).json({
         success: false,
         message,
