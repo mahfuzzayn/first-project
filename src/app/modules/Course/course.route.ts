@@ -3,7 +3,7 @@ import validateRequest from '../../middlewares/validateRequest'
 import { CourseValidations } from './course.validation'
 import { CourseControllers } from './course.controller'
 import auth from '../../middlewares/auth'
-import { USER_ROLE } from '../user/user.const'
+import { USER_ROLE } from '../User/user.const'
 
 const router = express.Router()
 

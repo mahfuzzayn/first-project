@@ -3,7 +3,7 @@ import { StudentControllers } from './student.controller'
 import validateRequest from '../../middlewares/validateRequest'
 import { updateStudentValidationSchema } from './student.validation'
 import auth from '../../middlewares/auth'
-import { USER_ROLE } from '../user/user.const'
+import { USER_ROLE } from '../User/user.const'
 
 const router = express.Router()
 

@@ -2,7 +2,7 @@ import express from 'express'
 import { AuthValidations } from './auth.validation'
 import validateRequest from '../../middlewares/validateRequest'
 import { AuthControllers } from './auth.controller'
-import { USER_ROLE } from '../user/user.const'
+import { USER_ROLE } from '../User/user.const'
 import auth from '../../middlewares/auth'
 
 const router = express.Router()

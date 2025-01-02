@@ -1,6 +1,6 @@
 import config from '../../config'
 import AppError from '../../errors/AppError'
-import { User } from '../user/user.model'
+import { User } from '../User/user.model'
 import { TLoginUser } from './auth.interface'
 import httpStatus from 'http-status'
 import { JwtPayload } from 'jsonwebtoken'

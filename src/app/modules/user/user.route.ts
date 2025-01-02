@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { UserControllers } from './user.controller'
-import { StudentValidations } from '../student/student.validation'
+import { StudentValidations } from '../Student/student.validation'
 import validateRequest from '../../middlewares/validateRequest'
 import { FacultyValidations } from '../Faculty/faculty.validation'
 import { AdminValidations } from '../Admin/admin.validate'

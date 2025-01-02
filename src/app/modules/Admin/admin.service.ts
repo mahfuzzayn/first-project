@@ -6,7 +6,7 @@ import { TAdmin } from './admin.interface'
 import { Admin } from './admin.model'
 import httpStatus from 'http-status'
 import AppError from '../../errors/AppError'
-import { User } from '../user/user.model'
+import { User } from '../User/user.model'
 
 const getAllAdminsFromDB = async (query: Record<string, unknown>) => {
     const AdminQuery = new QueryBuilder(

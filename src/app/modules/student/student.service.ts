@@ -2,7 +2,7 @@
 import { Student } from './student.model'
 import { TStudent } from './student.interface'
 import mongoose from 'mongoose'
-import { User } from '../user/user.model'
+import { User } from '../User/user.model'
 import AppError from '../../errors/AppError'
 import httpStatus from 'http-status'
 import QueryBuilder from '../../builder/QueryBuilder'
@@ -94,8 +94,12 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
         .fields()
 
     const result = await studentQuery.modelQuery
+    const meta = await studentQuery.countTotal()
 
-    return result
+    return {
+        meta,
+        result,
+    }
 }
 
 const getSingleStudentFromDB = async (id: string) => {

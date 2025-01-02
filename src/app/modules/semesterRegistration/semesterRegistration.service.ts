@@ -2,7 +2,7 @@
 import mongoose from 'mongoose'
 import QueryBuilder from '../../builder/QueryBuilder'
 import AppError from '../../errors/AppError'
-import { AcademicSemester } from '../academicSemester/academicSemester.model'
+import { AcademicSemester } from '../AcademicSemester/academicSemester.model'
 import { RegistrationStatus } from './semesterRegistration.const'
 import { TSemesterRegistration } from './semesterRegistration.interface'
 import { SemesterRegistration } from './semesterRegistration.model'

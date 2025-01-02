@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import config from '../../config'
-import { TStudent } from '../student/student.interface'
-import { Student } from '../student/student.model'
-import { AcademicSemester } from '../academicSemester/academicSemester.model'
+import { TStudent } from '../Student/student.interface'
+import { Student } from '../Student/student.model'
+import { AcademicSemester } from '../AcademicSemester/academicSemester.model'
 import { TUser } from './user.interface'
 import { User } from './user.model'
 import {
