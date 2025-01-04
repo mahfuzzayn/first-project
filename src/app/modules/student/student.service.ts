@@ -9,82 +9,10 @@ import QueryBuilder from '../../builder/QueryBuilder'
 import { studentSearchableFields } from './student.const'
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
-    // const queryObj = { ...query }
-
-    // // Filtering
-    // const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields']
-
-    // excludeFields.forEach(el => delete queryObj[el])
-
-    // let searchTerm: string = ''
-
-    // if (query?.searchTerm) {
-    //     searchTerm = query?.searchTerm as string
-    // }
-
-    // const searchQuery = Student.find({
-    //     $or: studentSearchableFields.map(field => ({
-    //         [field]: { $regex: searchTerm, $options: 'i' },
-    //     })),
-    // })
-
-    // const filterQuery = searchQuery.find(queryObj)
-
-    // let sort = '-createdAt'
-
-    // if (query?.sort) {
-    //     sort = query?.sort as string
-    // }
-
-    // const sortQuery = filterQuery.sort(sort)
-
-    // let page: number = 1
-    // let limit: number = 0
-    // let skip: number = 0
-
-    // if (query?.limit) {
-    //     limit = query?.limit as number
-    // }
-
-    // if (query?.page) {
-    //     page = query?.page as number
-    //     skip = (page - 1) * limit
-    // }
-
-    // const paginateQuery = sortQuery.skip(skip)
-
-    // const limitQuery = paginateQuery.limit(limit)
-
-    // let fields = '-__v'
-
-    // // fields: 'name,email';
-    // // fields: query
-
-    // if (query?.fields) {
-    //     fields = (query?.fields as string).split(',').join(' ')
-    // }
-
-    // const fieldQUery = limitQuery.select(fields)
-
-    // const result = await fieldQUery.populate('admissionSemester').populate({
-    //     path: 'academicDepartment',
-    //     populate: {
-    //         path: 'academicFaculty',
-    //     },
-    // })
-
-    // return result
-
     const studentQuery = new QueryBuilder(
-        Student.find()
-            .populate('user')
-            .populate('admissionSemester')
-            .populate({
-                path: 'academicDepartment',
-                populate: {
-                    path: 'academicFaculty',
-                },
-            }),
+        Student.find().populate(
+            'user admissionSemester academicDepartment academicFaculty',
+        ),
         query,
     )
         .search(studentSearchableFields)
@@ -103,14 +31,9 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 }
 
 const getSingleStudentFromDB = async (id: string) => {
-    const result = await Student.findById(id)
-        .populate('admissionSemester')
-        .populate({
-            path: 'academicDepartment',
-            populate: {
-                path: 'academicFaculty',
-            },
-        })
+    const result = await Student.findById(id).populate(
+        'user admissionSemester academicDepartment academicFaculty',
+    )
 
     return result
 }

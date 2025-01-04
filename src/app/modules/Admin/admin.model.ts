@@ -81,7 +81,7 @@ const adminSchema = new Schema<TAdmin, AdminModel>(
             type: String,
             required: [true, 'Permanent Address is required'],
         },
-        profileImg: { type: String },
+        profileImg: { type: String, default: '' },
         managementDepartment: {
             type: Schema.Types.ObjectId,
             required: [true, 'Management Department ID is required'],
@@ -120,7 +120,7 @@ adminSchema.pre('aggregate', function (next) {
 
 adminSchema.statics.isUserExists = async function (id: string) {
     const existingUser = await Admin.findById(id)
-    console.log(existingUser);
+    console.log(existingUser)
     return existingUser
 }
 

@@ -157,8 +157,8 @@ const assignFacultiesWithCourseIntoDB = async (
     const result = CourseFaculty.findByIdAndUpdate(
         id,
         {
+            course: id,
             $addToSet: {
-                course: id,
                 faculties: { $each: payload },
             },
         },
@@ -166,6 +166,14 @@ const assignFacultiesWithCourseIntoDB = async (
             upsert: true,
             new: true,
         },
+    )
+
+    return result
+}
+
+const getFacultiesWithCourseFromDB = async (courseId: string) => {
+    const result = await CourseFaculty.findOne({ course: courseId }).populate(
+        'faculties',
     )
 
     return result
@@ -197,5 +205,6 @@ export const CourseServices = {
     deleteCourseFromDB,
     updateCourseIntoDB,
     assignFacultiesWithCourseIntoDB,
+    getFacultiesWithCourseFromDB,
     removeFacultiesFromCourseIntoDB,
 }

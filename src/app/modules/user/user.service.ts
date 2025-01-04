@@ -10,6 +10,7 @@ import {
     generateFacultyId,
     generateStudentId,
 } from './user.utils'
+import httpStatus from 'http-status'
 import mongoose from 'mongoose'
 import AppError from '../../errors/AppError'
 import { TFaculty } from '../Faculty/faculty.interface'
@@ -17,6 +18,7 @@ import { Faculty } from '../Faculty/faculty.model'
 import { TAdmin } from '../Admin/admin.interface'
 import { Admin } from '../Admin/admin.model'
 import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary'
+import { AcademicDepartment } from '../AcademicDepartment/academicDepartment.model'
 
 const createStudentIntoDB = async (
     file: any,
@@ -40,6 +42,28 @@ const createStudentIntoDB = async (
         payload.admissionSemester,
     )
 
+    if (!admissionSemester) {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            'Admission semester not found!',
+        )
+    }
+
+    // find academic department
+    const academicDepartment = await AcademicDepartment.findById(
+        payload.academicDepartment,
+    )
+
+    if (!academicDepartment) {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            'Admission department not found!',
+        )
+    }
+
+    // Add Academic Faculty to payload to save in the database
+    payload.academicFaculty = academicDepartment.academicFaculty
+
     const session = await mongoose.startSession()
 
     try {
@@ -48,13 +72,18 @@ const createStudentIntoDB = async (
         userData.id = await generateStudentId(admissionSemester)
 
         // Send image to cloudinary
-        const imageName = `${userData.id}-${payload?.name?.firstName}`
-        const path = file?.path
+        if (file) {
+            const imageName = `${userData.id}-${payload?.name?.firstName}`
 
-        const uploadedProfileImgToCloudinary: any = await sendImageToCloudinary(
-            imageName,
-            path,
-        )
+            const path = file?.path
+            const uploadedProfileImgToCloudinary = await sendImageToCloudinary(
+                imageName,
+                path,
+            )
+
+            payload.profileImg =
+                uploadedProfileImgToCloudinary?.secure_url as string
+        }
 
         // create a user (transaction-1)
         const newUser = await User.create([userData], { session }) // array
@@ -70,7 +99,6 @@ const createStudentIntoDB = async (
         // set id, _id as user
         payload.id = newUser[0].id // embedding id
         payload.user = newUser[0]._id // reference _id
-        payload.profileImg = uploadedProfileImgToCloudinary?.secure_url
 
         // create a student (transaction-2)
         const newStudent = await Student.create([payload], { session })
@@ -107,6 +135,19 @@ const createFacultyIntoDB = async (
 
     userData.email = payload?.email
 
+    const academicDepartment = await AcademicDepartment.findById(
+        payload.academicDepartment,
+    )
+
+    if (!academicDepartment) {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            'Admission department not found!',
+        )
+    }
+
+    payload.academicFaculty = academicDepartment?.academicFaculty
+
     const session = await mongoose.startSession()
 
     try {
@@ -114,13 +155,18 @@ const createFacultyIntoDB = async (
 
         userData.id = await generateFacultyId()
 
-        const imageName = `${userData.id}-${payload?.name?.firstName}`
-        const path = file?.path
+        if (file) {
+            const imageName = `${userData.id}-${payload?.name?.firstName}`
 
-        const uploadedProfileImgToCloudinary: any = await sendImageToCloudinary(
-            imageName,
-            path,
-        )
+            const path = file?.path
+            const uploadedProfileImgToCloudinary = await sendImageToCloudinary(
+                imageName,
+                path,
+            )
+
+            payload.profileImg =
+                uploadedProfileImgToCloudinary?.secure_url as string
+        }
 
         const newUser = await User.create([userData], { session })
 
@@ -133,7 +179,6 @@ const createFacultyIntoDB = async (
 
         payload.id = newUser[0].id
         payload.user = newUser[0]._id
-        payload.profileImg = uploadedProfileImgToCloudinary?.secure_url
 
         const newFaculty = await Faculty.create([payload], { session })
 
@@ -176,13 +221,18 @@ const createAdminIntoDB = async (
 
         userData.id = await generateAdminId()
 
-        const imageName = `${userData.id}-${payload?.name?.firstName}`
-        const path = file?.path
+        if (file) {
+            const imageName = `${userData.id}-${payload?.name?.firstName}`
 
-        const uploadedProfileImgToCloudinary: any = await sendImageToCloudinary(
-            imageName,
-            path,
-        )
+            const path = file?.path
+            const uploadedProfileImgToCloudinary = await sendImageToCloudinary(
+                imageName,
+                path,
+            )
+
+            payload.profileImg =
+                uploadedProfileImgToCloudinary?.secure_url as string
+        }
 
         const newUser = await User.create([userData], { session })
 
@@ -195,7 +245,6 @@ const createAdminIntoDB = async (
 
         payload.id = newUser[0].id
         payload.user = newUser[0]._id
-        payload.profileImg = uploadedProfileImgToCloudinary?.secure_url
 
         const newAdmin = await Admin.create([payload], { session })
 

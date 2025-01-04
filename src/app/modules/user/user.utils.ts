@@ -1,6 +1,7 @@
 import AppError from '../../errors/AppError'
 import { TAcademicSemester } from '../AcademicSemester/academicSemester.interface'
 import { User } from './user.model'
+import httpStatus from 'http-status'
 
 const findLastStudentId = async () => {
     const lastStudent = await User.findOne(

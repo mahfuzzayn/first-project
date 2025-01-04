@@ -9,8 +9,14 @@ const router = express.Router()
 
 router.get(
     '/',
-    auth(USER_ROLE.admin),
+    auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
     EnrolledCourseControllers.getAllEnrolledCourses,
+)
+
+router.get(
+    '/:id',
+    auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
+    EnrolledCourseControllers.getSingleEnrolledCourse,
 )
 
 router.post(
@@ -22,9 +28,15 @@ router.post(
     EnrolledCourseControllers.createEnrolledCourse,
 )
 
+router.get(
+    '/my-enrolled-courses',
+    auth(USER_ROLE.student),
+    EnrolledCourseControllers.getMyEnrolledCourse,
+)
+
 router.patch(
     '/update-enrolled-course-marks',
-    auth(USER_ROLE.faculty),
+    auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.faculty),
     validateRequest(
         EnrolledCourseValidations.updateEnrolledCourseMarksValidationSchema,
     ),

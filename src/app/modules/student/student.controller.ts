@@ -23,7 +23,8 @@ const getAllStudents = catchAsync(async (req, res) => {
         statusCode: httpStatus.OK,
         success: true,
         message: 'Students are retrieved successfully',
-        data: result,
+        meta: result?.meta,
+        data: result?.result,
     })
 })
 
@@ -43,7 +44,7 @@ const deleteStudent = catchAsync(async (req, res) => {
 const updateStudent = catchAsync(async (req, res) => {
     const { studentId } = req.params
     const { student: updatedData } = req.body
-    
+
     const result = await StudentServices.updateStudentIntoDB(
         studentId,
         updatedData,

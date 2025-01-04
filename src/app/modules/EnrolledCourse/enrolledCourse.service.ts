@@ -11,7 +11,7 @@ import { Course } from '../Course/course.model'
 import { Faculty } from '../Faculty/faculty.model'
 import { calculateGradeAndPoints } from './enrolledCourse.utils'
 import QueryBuilder from '../../builder/QueryBuilder'
-import { enrolledCoursesSearchableFields } from './enrolledCourse.const'
+import { enrolledCourseSearchableFields } from './enrolledCourse.const'
 
 const createEnrolledCourseIntoDB = async (
     userId: string,
@@ -172,7 +172,43 @@ const createEnrolledCourseIntoDB = async (
 
 const getAllEnrolledCoursesFromDB = async (query: Record<string, unknown>) => {
     const enrolledCoursesQuery = new QueryBuilder(EnrolledCourse.find(), query)
-        .search(enrolledCoursesSearchableFields)
+        .search(enrolledCourseSearchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields()
+
+    const result = await enrolledCoursesQuery.modelQuery
+    const meta = await enrolledCoursesQuery.countTotal()
+
+    return { meta, result }
+}
+
+const getSingleEnrolledCourseFromDB = async (enrolledCourseId: string) => {
+    const result = await EnrolledCourse.findById(enrolledCourseId)
+
+    return result
+}
+
+const getMyEnrolledCoursesFromDB = async (
+    studentId: string,
+    query: Record<string, unknown>,
+) => {
+    const student = await Student.findOne({
+        id: studentId,
+    })
+
+    if (!student) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Student not found!')
+    }
+
+    const enrolledCoursesQuery = new QueryBuilder(
+        EnrolledCourse.find({ student: student._id }).populate(
+            'semesterRegistration academicSemester academicFaculty academicDepartment offeredCourse course student faculty',
+        ),
+        query,
+    )
+        .search(enrolledCourseSearchableFields)
         .filter()
         .sort()
         .paginate()
@@ -240,18 +276,16 @@ const updateEnrolledCourseMarksIntoDB = async (
         const { classTest1, classTest2, midTerm, finalTerm } =
             isEnrolledCourseBelongToFaculty.courseMarks
         const totalMarks =
-            Math.ceil(classTest1 * 0.1) +
-            Math.ceil(midTerm * 0.3) +
-            Math.ceil(classTest2 * 0.1) +
-            Math.ceil(finalTerm * 0.5)
+            Math.ceil(classTest1) +
+            Math.ceil(midTerm) +
+            Math.ceil(classTest2) +
+            Math.ceil(finalTerm)
 
         const result = calculateGradeAndPoints(totalMarks)
 
         modifiedData.grade = result.grade
         modifiedData.gradePoints = result.gradePoints
         modifiedData.isCompleted = true
-
-        // console.log(result, totalMarks)
     }
 
     if (courseMarks && Object.keys(courseMarks).length) {
@@ -274,5 +308,7 @@ const updateEnrolledCourseMarksIntoDB = async (
 export const EnrolledCourseServices = {
     createEnrolledCourseIntoDB,
     getAllEnrolledCoursesFromDB,
+    getSingleEnrolledCourseFromDB,
+    getMyEnrolledCoursesFromDB,
     updateEnrolledCourseMarksIntoDB,
 }

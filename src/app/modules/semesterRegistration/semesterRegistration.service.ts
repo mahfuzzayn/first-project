@@ -3,7 +3,10 @@ import mongoose from 'mongoose'
 import QueryBuilder from '../../builder/QueryBuilder'
 import AppError from '../../errors/AppError'
 import { AcademicSemester } from '../AcademicSemester/academicSemester.model'
-import { RegistrationStatus } from './semesterRegistration.const'
+import {
+    RegistrationStatus,
+    semesterRegistrationSearchableFields,
+} from './semesterRegistration.const'
 import { TSemesterRegistration } from './semesterRegistration.interface'
 import { SemesterRegistration } from './semesterRegistration.model'
 import httpStatus from 'http-status'
@@ -65,14 +68,16 @@ const getAllSemesterRegistrationsFromDB = async (
         SemesterRegistration.find().populate('academicSemester'),
         query,
     )
+        .search(semesterRegistrationSearchableFields)
         .filter()
         .sort()
         .paginate()
         .fields()
 
     const result = await semesterRegistrationQuery.modelQuery
+    const meta = await semesterRegistrationQuery.countTotal()
 
-    return result
+    return { meta, result }
 }
 
 const getSingleSemesterRegistrationFromDB = async (id: string) => {

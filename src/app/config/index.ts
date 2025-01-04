@@ -19,4 +19,5 @@ export default {
     cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
     reset_sender_account_email: process.env.RESET_SENDER_ACCOUNT_EMAIL,
     reset_sender_account_password: process.env.RESET_SENDER_ACCOUNT_PASSWORD,
+    super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
 }

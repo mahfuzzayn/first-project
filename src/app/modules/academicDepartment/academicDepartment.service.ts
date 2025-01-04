@@ -1,29 +1,53 @@
+import QueryBuilder from '../../builder/QueryBuilder'
 import AppError from '../../errors/AppError'
+import { AcademicFaculty } from '../AcademicFaculty/academicFaculty.model'
+import { academicDepartmentSearchableFields } from './academicDepartment.const'
 import { TAcademicDepartment } from './academicDepartment.interface'
 import { AcademicDepartment } from './academicDepartment.model'
 import httpStatus from 'http-status'
 
 const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
-    // const isDepartmentExist = await AcademicDepartment.findOne({
-    //     name: payload.name,
-    // })
+    const isAcademicDepartmentExists = await AcademicDepartment.findOne({
+        name: payload.name,
+    })
 
-    // if (isDepartmentExist) {
-    //     throw new AppError(
-    //         httpStatus.NOT_FOUND,
-    //         'This department exists already',
-    //     )
-    // }
+    if (isAcademicDepartmentExists) {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            'This department exists already',
+        )
+    }
+
+    const isAcademicFacultyExists = await AcademicFaculty.findById(
+        payload?.academicFaculty,
+    )
+
+    if (!isAcademicFacultyExists) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Academic Faculty not found!')
+    }
 
     const result = await AcademicDepartment.create(payload)
 
     return result
 }
 
-const getAllAcademicDepartmentsFromDB = async () => {
-    const result = await AcademicDepartment.find().populate('academicFaculty')
+const getAllAcademicDepartmentsFromDB = async (
+    query: Record<string, unknown>,
+) => {
+    const academicDepartmentsQuery = new QueryBuilder(
+        AcademicDepartment.find().populate('academicFaculty'),
+        query,
+    )
+        .search(academicDepartmentSearchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields()
 
-    return result
+    const result = await academicDepartmentsQuery.modelQuery
+    const meta = await academicDepartmentsQuery.countTotal()
+
+    return { meta, result }
 }
 
 const getSingleAcademicDepartmentFromDB = async (departmentId: string) => {
@@ -39,6 +63,19 @@ const updateAcademicDepartmentIntoDB = async (
     departmentId: string,
     payload: Partial<TAcademicDepartment>,
 ) => {
+    if (payload?.academicFaculty) {
+        const isAcademicFacultyExists = await AcademicFaculty.findById(
+            payload?.academicFaculty,
+        )
+
+        if (!isAcademicFacultyExists) {
+            throw new AppError(
+                httpStatus.NOT_FOUND,
+                'Academic Faculty not found!',
+            )
+        }
+    }
+
     const result = await AcademicDepartment.findByIdAndUpdate(
         departmentId,
         payload,

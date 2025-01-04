@@ -52,7 +52,6 @@ export const createFacultyValidationSchema = z.object({
             permanentAddress: z
                 .string()
                 .min(1, 'Permanent Address is required'),
-            // profileImg: z.string().url('Invalid profile image URL'),
             academicDepartment: z.string(),
         }),
     }),
@@ -111,7 +110,6 @@ export const updateFacultyValidationSchema = z.object({
                 .optional(),
             presentAddress: z.string().optional(),
             permanentAddress: z.string().optional(),
-            profileImg: z.string().url('Invalid profile image URL').optional(),
             academicDepartment: z.string().optional(),
         }),
     }),
